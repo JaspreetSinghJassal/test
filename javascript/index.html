@@ -75,6 +75,8 @@ var emps;
 		reDraw();
 		return false;
 	});
+	
+	
  });
  
  
@@ -85,18 +87,53 @@ var emps;
 	$("#servicesAnsatte").html("");
 	
 	for(var i = 0; i < emps.length; i++) {
-		$("#ansatte").append("<li>" + emps[i].getFullName() + "</li>");
+		if(emps[i])
+			$("#ansatte").append("<li>" + emps[i].getFullName() + "</li>");
 	}
 	
 	var tempArray = departments[0].getEmployees();
 	for(var i = 0; i < tempArray.length; i++) {
-		$("#consultingAnsatte").append("<li>" + tempArray[i].getFullName() + "</li>");
+		if(tempArray[i])
+			$("#consultingAnsatte").append("<li>" + tempArray[i].getFullName() + "</li>");
 	}
 	
 	tempArray = departments[1].getEmployees();
 	for(var i = 0; i < tempArray.length; i++) {
-		$("#servicesAnsatte").append("<li>" + tempArray[i].getFullName() + "</li>");
+		if(tempArray[i])
+			$("#servicesAnsatte").append("<li>" + tempArray[i].getFullName() + "</li>");
 	}
+	
+	$("li").click(function(e) {
+		var target = $(e.target);
+		//console.log(html());
+		
+		for(var i = 0; i < emps.length; i++) {
+			if(emps[i] && emps[i].getFullName() == target.html()) {
+				delete emps[i];
+				break;
+			}
+		}
+		
+		var tempArray = departments[0].getEmployees();
+		for(var i = 0; i < tempArray.length; i++) {
+			if(tempArray[i] && tempArray[i].getFullName() == target.html()) {
+				delete tempArray[i];
+				break;
+			}
+		}
+		
+		tempArray = departments[1].getEmployees();
+		for(var i = 0; i < tempArray.length; i++) {
+			if(tempArray[i] && tempArray[i].getFullName() == target.html()) {
+				delete tempArray[i];
+				break;
+			}
+		}
+		
+		reDraw();
+		
+		return true;
+	});
  }
  
 </script>
