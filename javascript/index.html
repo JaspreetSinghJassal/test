@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>JS Test</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+<script type="text/javascript">
+	var Visma = {};
+</script>
+<script type="text/javascript" src="visma.emplyee.js"></script>
+<script type="text/javascript" src="visma.department.js"></script>
+</head>
+
+<body>
+Legg til ansatt
+<form id="addform">
+	<input id="name" />
+	<select id="department">
+	</select>
+	<input type="submit" />
+</form>
+
+<br /><hr />
+
+<h1>Ansatte</h1>
+<ul id="ansatte"></ul>
+
+<h1>Consulting Ansatte</h1>
+<ul id="consultingAnsatte"></ul>
+
+<h1>Services Ansatte</h1>
+<ul id="servicesAnsatte"></ul>
+
+
+
+
+<script type="text/javascript">
+
+var departments;
+var emps;
+
+ $(document).ready(function() {
+
+	departments = new Array();
+	var consultingObj = new Visma.department({name: "Consulting", location: "Bjørvika"});
+	var servicesObj = new Visma.department({name: "Services", location: "Sinsen"});
+	
+	
+	emps = new Array();
+	emps.push(new Visma.employee({name:"Håvard Kindem"}));
+	emps.push(new Visma.employee({name:"Ola Nordmann"}));
+	emps.push(new Visma.employee({name:"Leif Andersen"}));
+	emps.push(new Visma.employee({name:"Kent barbie"}));
+	emps.push(new Visma.employee({name:"Lolman Superhero"}));
+	
+	consultingObj.addEmployee(emps[0]);
+	consultingObj.addEmployee(emps[1]);
+	consultingObj.addEmployee(emps[2]);
+	
+	servicesObj.addEmployee(emps[3]);
+	servicesObj.addEmployee(emps[4]);
+	
+	departments.push(consultingObj);
+	departments.push(servicesObj);
+	
+	reDraw();
+	
+	for(var i = 0; i < departments.length; i++) {
+		$("#department").append('<option value="' + i + '">' + departments[i].getDepartmentName() + '</option>');
+	}
+	
+	$("#addform").submit(function() {
+		var newEmp = new Visma.employee({name:$("#name").val()});
+		emps.push(newEmp);
+		departments[$("#department").val()].addEmployee(newEmp);
+		reDraw();
+		return false;
+	});
+ });
+ 
+ 
+ 
+ function reDraw() {
+	$("#ansatte").html("");
+	$("#consultingAnsatte").html("");
+	$("#servicesAnsatte").html("");
+	
+	for(var i = 0; i < emps.length; i++) {
+		$("#ansatte").append("<li>" + emps[i].getFullName() + "</li>");
+	}
+	
+	var tempArray = departments[0].getEmployees();
+	for(var i = 0; i < tempArray.length; i++) {
+		$("#consultingAnsatte").append("<li>" + tempArray[i].getFullName() + "</li>");
+	}
+	
+	tempArray = departments[1].getEmployees();
+	for(var i = 0; i < tempArray.length; i++) {
+		$("#servicesAnsatte").append("<li>" + tempArray[i].getFullName() + "</li>");
+	}
+ }
+ 
+</script>
+
+</body>
+</html>
